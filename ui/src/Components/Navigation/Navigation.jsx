@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { Link } from 'react-router-dom';
+
 import './style.css'
 
 
@@ -9,7 +11,9 @@ export default class Navigation extends React.Component {
       <div class="Navigation">
         <ul class="Navigation-list">
           <li class="Nav-item">
-            <span>Start new game</span>
+            <span>
+              <Link to="/play">Start new game</Link>
+            </span>
           </li>
           <li class="Nav-item">
             <span>Go to dashboard</span>
