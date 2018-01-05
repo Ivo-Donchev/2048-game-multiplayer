@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "expressjs": "^1.0.1"
+    "expressjs": "^1.0.1",
+    "mongodb": "^3.0.1"
   }
 }
