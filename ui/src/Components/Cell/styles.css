@@ -1,0 +1,120 @@
+.cell {
+  width: 106.25px;
+  height: 106.25px;
+  margin: 8px;
+  background-color: #d0c1b4;
+  border-radius: 1px;
+  display: grid;
+  grid-temlate-rows: 1fr auto 1fr;
+  grid-temlate-columns: 1fr auto 1fr;
+}
+
+.value {
+  grid-column: 2/3;
+  grid-row: 2/3;
+  font-size: 55px;
+}
+
+.cell-0 {
+  background-color: #cec0b5;
+}
+
+.value-0 {
+  color: transparent;
+}
+
+.cell-2 {
+  background-color: #eee4da;
+}
+
+.value-2 {
+  color: #776e64;
+}
+
+.cell-4 {
+  background-color: #ede0c8;
+}
+
+.value-4 {
+  color: #776e64;
+}
+
+.cell-8 {
+  background-color: #f2b179;
+}
+.value-8 {
+  color: #faf6f2;
+}
+
+.cell-16 {
+  background-color: #f59563;
+}
+.value-16 {
+  color: #faf6f2;
+}
+
+.cell-32 {
+}
+.value-32 {
+}
+
+.cell-64 {
+  background-color: #f59563;
+}
+
+.value-64 {
+  color: #faf6f2;
+}
+
+.cell-128 {
+  background-color: #f59563;
+}
+
+.value-128 {
+  color: #faf6f2;
+}
+
+.cell-256 {
+  background-color: #e7c65f;
+}
+
+.value-256 {
+  color: #f8eef7;
+  font-size: 40px;
+}
+
+.cell-512 {
+  background-color: #e3be48;
+}
+
+.value-512 {
+  color: #fff1f8;
+  font-size: 40px;
+}
+
+.cell-1024 {
+  background-color: #e7bf35;
+}
+
+.value-1024 {
+  color: #f9f2fa;
+  font-size: 30px;
+}
+
+.cell-2048 {
+  background-color: #e8bf25;
+}
+
+.value-2048 {
+  color: #fff6e0;
+  font-size: 30px;
+}
+
+.cell-4096 {
+  background-color: #353631;
+}
+
+.value-4096 {
+  color: #f8f4f2;
+  font-size: 30px;
+}

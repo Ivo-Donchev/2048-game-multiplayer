@@ -1,18 +1,11 @@
-.Board {
+.board {
   width: 500px;
   height: 500px;
   margin: 50px auto;
-  position: relative;
   background-color: #bdae9e;
   border-radius: 6px;
   padding: 15px;
-}
-
-.Cell {
-  width: 106.25px;;
-  height: 106.25px;;
-  margin: 8px;
-  background-color: #d0c1b4;
-  display: inline-block;
-  border-radius: 1px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr; 
+  grid-template-rows: 1fr 1fr 1fr 1fr; 
 }

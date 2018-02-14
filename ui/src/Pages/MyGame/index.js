@@ -1,17 +1,17 @@
 import React from 'react';
 import Board from 'Components/Board';
 
-class MyPage extends React.Component {
+class MyGame extends React.Component {
   state = {};
 
   render() {
     return (
       <div>
-        <span>MyPage component's content </span>
+        <h1>Start game</h1>
         <Board />
       </div>
     );
   }
 }
 
-export default MyPage;
+export default MyGame;
