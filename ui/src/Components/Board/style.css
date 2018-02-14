@@ -1,17 +1,18 @@
 .Board {
-  width: 470px;
-  height: 470px;
-  padding: 15px;
-  margin: auto;
-  background-color: #bbada0;
+  width: 500px;
+  height: 500px;
+  margin: 50px auto;
+  position: relative;
+  background-color: #bdae9e;
   border-radius: 6px;
+  padding: 15px;
 }
 
 .Cell {
-  width: 106.25px;
-  height: 106.25px;
-  background: #eee4da59;
+  width: 106.25px;;
+  height: 106.25px;;
+  margin: 8px;
+  background-color: #d0c1b4;
   display: inline-block;
-  margin: 4.5px;
-  border-radius: 3px;
+  border-radius: 1px;
 }

@@ -7,13 +7,13 @@ import './index.css';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 
-import { MyBoard } from './Components'
+import MyGame from './Pages/MyGame'
 
 ReactDOM.render((
   <BrowserRouter>
     <div>
       <Route exact path="/" component={App}/>
-      <Route path="/play" component={MyBoard}/>
+      <Route path="/my-game" component={MyGame}/>
     </div>
   </BrowserRouter>
   ), document.getElementById('root'));

@@ -19,4 +19,10 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-*.swp
+
+# Vim spw files
+ [._]*.s[a-v][a-z]
+ [._]*.sw[a-p]
+ [._]s[a-v][a-z]
+ [._]sw[a-p]
+
