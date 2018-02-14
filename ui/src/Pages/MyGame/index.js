@@ -1,14 +1,17 @@
 import React from 'react';
 import Board from 'Components/Board';
 
-class MyBoard extends React.Component {
+class MyPage extends React.Component {
+  state = {};
+
   render() {
     return (
       <div>
-        Full name: TODO Current Score: TODO
+        <span>MyPage component's content </span>
         <Board />
       </div>
     );
   }
 }
-export default MyBoard;
+
+export default MyPage;
