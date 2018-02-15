@@ -1,0 +1,16 @@
+.dashboard-header {
+  color: #ccc;
+  text-align: center;
+  width: 100vw;
+  display: block;
+}
+
+.socket-id-header {
+  color: white;
+  text-align: center;
+}
+
+.board-section {
+  min-width: 49vw;
+  float:left;
+}

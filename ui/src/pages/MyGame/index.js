@@ -7,13 +7,10 @@ import './styles.css';
 class MyGame extends React.Component {
   state = {
     socket: io.connect('http://localhost:3001'),
-    otherGames: {}
+    games: {}
   };
 
-  setupSocket = () => {
-    console.log(this.state);
-    const {socket} = this.state;
-
+  setupSocket = (socket) => {
     socket.on('connected', () => {
       console.log('connected successfully');
     });
@@ -24,7 +21,7 @@ class MyGame extends React.Component {
 
     socket.on('userDisconnected', data => {
       this.setState(prevState => {
-        delete prevState.otherGames[data.socketId];
+        delete prevState.games[data.socketId];
         return prevState;
       });
     });
@@ -36,7 +33,7 @@ class MyGame extends React.Component {
       if (this.state.socket.id !== socketId) {
         this.setState(
           {
-            otherGames: {
+            games: {
               [socketId]: value.data.values
             }
           },
@@ -51,7 +48,7 @@ class MyGame extends React.Component {
       if (this.state.socket.id !== socketId) {
         this.setState(
           {
-            otherGames: {
+            games: {
               [socketId]: value.data.values
             }
           },
@@ -71,11 +68,11 @@ class MyGame extends React.Component {
   };
 
   componentDidMount() {
-    this.setupSocket();
+    this.setupSocket(this.state.socket);
   }
 
   render() {
-    const otherBoards = Object.values(this.state.otherGames).map(values => (
+    const otherBoards = Object.values(this.state.games).map(values => (
       <Board enablePlaying={false} updateValues={() => null} values={values} />
     ));
 
@@ -88,7 +85,7 @@ class MyGame extends React.Component {
           newGame={this.newGame}
         />
         <h1>Other games</h1>
-        {otherBoards.map(board => <div>{board}</div>)}
+        {otherBoards}
       </div>
     );
   }

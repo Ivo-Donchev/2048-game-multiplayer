@@ -16,10 +16,9 @@ class Navigation extends React.Component {
             </span>
           </li>
           <li class="Nav-item">
-            <span>Go to dashboard</span>
-          </li>
-          <li class="Nav-item">
-            <span>History</span>
+            <span>
+              <Link to="/dashboard">Dashboard</Link>
+            </span>
           </li>
         </ul>
       </div>
