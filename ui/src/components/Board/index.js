@@ -6,7 +6,12 @@ import './style.css';
 class Board extends React.Component {
   state = {
     // values: [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]
-    values: [[0, 2, 0, 2], [0, 0, 0, 0], [0, 1024, 0, 0], [0, 2, 0, 0]],
+    values: this.props.values || [
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+      [0, 0, 0, 0]
+    ],
     // values: [[0, 2, 4, 8], [16, 32, 64, 128], [256, 512, 1024, 2048], [4096, 0, 0, 0]]
     freeze: false,
     updateTime: 100
@@ -46,17 +51,23 @@ class Board extends React.Component {
   updateValues = (counter, cb) => {
     const freeCells = this.getFreeCells();
 
-    this.setState(prevState => {
-      while (counter > 0) {
-        const index = parseInt((Math.random() * 100) % freeCells.length);
-        const [rowIndex, columnIndex] = freeCells[index];
+    this.setState(
+      prevState => {
+        while (counter > 0) {
+          const index = parseInt((Math.random() * 100) % freeCells.length);
+          const [rowIndex, columnIndex] = freeCells[index];
 
-        prevState.values[rowIndex][columnIndex] = 2;
+          prevState.values[rowIndex][columnIndex] = 2;
 
-        counter--;
+          counter--;
+        }
+        return prevState;
+      },
+      () => {
+        this.props.updateValues(this.state.values);
+        cb();
       }
-      return prevState;
-    }, cb);
+    );
   };
 
   getCellsAtLeft = (rowIndex, columnIndex) =>
@@ -115,7 +126,7 @@ class Board extends React.Component {
     this.setState(prevState => {
       prevState.values[rowIndex] = row;
       return prevState;
-    });
+    }, this.props.updateValues(this.state.values));
   };
 
   moveCellToRight = (rowIndex, columnIndex) => {
@@ -149,7 +160,7 @@ class Board extends React.Component {
     this.setState(prevState => {
       prevState.values[rowIndex] = row;
       return prevState;
-    });
+    }, this.props.updateValues(this.state.values));
   };
 
   moveCellToTop = (rowIndex, columnIndex) => {
@@ -188,7 +199,7 @@ class Board extends React.Component {
         row[columnIndex] = column[rowIndex];
       });
       return prevState;
-    });
+    }, this.props.updateValues(this.state.values));
   };
 
   moveCellToBottom = (rowIndex, columnIndex) => {
@@ -228,7 +239,7 @@ class Board extends React.Component {
         row[columnIndex] = column[rowIndex];
       });
       return prevState;
-    });
+    }, this.props.updateValues(this.state.values));
   };
 
   moveLeft = () => {
@@ -316,16 +327,34 @@ class Board extends React.Component {
     );
 
     setTimeout(() => {
-      this.setState({freeze: false});
-      this.updateValues(2);
+      this.setState({freeze: false}, () => this.updateValues(2, () => null));
     }, this.state.updateTime);
   };
+
+  componentDidMount() {
+    if (this.props.enablePlaying) {
+      this.props.newGame(this.state.values);
+      this.updateValues(2, () => null);
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.values !== this.props.values) {
+      this.setState({values: nextProps.values});
+    }
+  }
 
   render() {
     return (
       <div>
-        {this.props.enablePlaying && (
+        {this.props.enablePlaying ? (
           <div className="board" onKeyDown={this.onKeyPress} tabIndex="0">
+            {this.state.values.map(row =>
+              row.map(value => <Cell value={value} />)
+            )}
+          </div>
+        ) : (
+          <div className="board">
             {this.state.values.map(row =>
               row.map(value => <Cell value={value} />)
             )}
