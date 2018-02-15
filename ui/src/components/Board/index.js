@@ -5,14 +5,12 @@ import './style.css';
 
 class Board extends React.Component {
   state = {
-    // values: [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]
     values: this.props.values || [
       [0, 0, 0, 0],
       [0, 0, 0, 0],
       [0, 0, 0, 0],
       [0, 0, 0, 0]
     ],
-    // values: [[0, 2, 4, 8], [16, 32, 64, 128], [256, 512, 1024, 2048], [4096, 0, 0, 0]]
     freeze: false,
     updateTime: 100
   };
@@ -48,12 +46,35 @@ class Board extends React.Component {
   isGameWon = () =>
     this.state.values.some(row => Boolean(row.some(el => el === 2048)));
 
+  isGameLost = () => {
+    if (this.isGameWon() || this.getFreeCells().length !== 0) return false;
+
+    const {values} = this.state;
+    for (let i = 0; i < this.state.values.length; i++) {
+      for (let j = 0; j < this.state.values.length - 1; j++) {
+        // check rows
+        if (values[i][j] == values[i][j + 1]) {
+          return false;
+        }
+        // check colums
+        if (values[j][i] == values[j + 1][i]) {
+          return false;
+        }
+      }
+    }
+
+    return true;
+  };
+
   updateValues = (counter, cb) => {
     const freeCells = this.getFreeCells();
 
     this.setState(
       prevState => {
         while (counter > 0) {
+          if (this.getFreeCells().length == 0) {
+            break;
+          }
           const index = parseInt((Math.random() * 100) % freeCells.length);
           const [rowIndex, columnIndex] = freeCells[index];
 
@@ -282,7 +303,7 @@ class Board extends React.Component {
     const freeCells = this.getFreeCells();
 
     // Game is lost
-    if (freeCells.length == 0) {
+    if (this.isGameLost()) {
       alert('Game over');
       return;
     }
@@ -345,16 +366,22 @@ class Board extends React.Component {
   }
 
   render() {
+    const overlayStatus = this.isGameWon()
+      ? 'won'
+      : this.isGameLost() ? 'lost' : '';
+
     return (
       <div>
         {this.props.enablePlaying ? (
           <div className="board" onKeyDown={this.onKeyPress} tabIndex="0">
+            <div className={'overlay ' + overlayStatus}>{overlayStatus}</div>
             {this.state.values.map(row =>
               row.map(value => <Cell value={value} />)
             )}
           </div>
         ) : (
           <div className="board">
+            <div className={'overlay ' + overlayStatus}>{overlayStatus}</div>
             {this.state.values.map(row =>
               row.map(value => <Cell value={value} />)
             )}

@@ -9,3 +9,25 @@
   grid-template-columns: 1fr 1fr 1fr 1fr; 
   grid-template-rows: 1fr 1fr 1fr 1fr; 
 }
+
+.overlay {
+  width: 500px;
+  height: 500px;
+  padding: 15px;
+  position: fixed;
+  font-size: 100px;
+  text-align: center;
+  line-height: 450px;
+  opacity: 0.3;
+  color: transparent;
+}
+
+.won {
+  background-color: green;
+  color: white;
+}
+
+.lost {
+  background-color: red;
+  color: white;
+}
