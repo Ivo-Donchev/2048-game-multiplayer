@@ -76,6 +76,7 @@ class Board extends React.Component {
             break;
           }
           const index = parseInt((Math.random() * 100) % freeCells.length);
+          const value = [2, 4][parseInt((Math.random() * 100) % 2)]
           const [rowIndex, columnIndex] = freeCells[index];
 
           prevState.values[rowIndex][columnIndex] = 2;
