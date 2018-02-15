@@ -1,5 +1,5 @@
 import React from 'react';
-import Cell from 'Components/Cell';
+import Cell from 'components/Cell';
 
 import './style.css';
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import Board from 'Components/Board';
+import Board from 'components/Board';
 
 class MyGame extends React.Component {
   state = {};
