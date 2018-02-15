@@ -4,14 +4,14 @@ import Cell from 'components/Cell';
 import './style.css';
 
 class Board extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      // values: [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]
-      values: [[0, 2, 0, 2], [0, 0, 0, 0], [0, 0, 0, 0], [0, 2, 0, 0]]
-      // values: [[0, 2, 4, 8], [16, 32, 64, 128], [256, 512, 1024, 2048], [4096, 0, 0, 0]]
-    };
-  }
+  state = {
+    // values: [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]
+    values: [[0, 2, 0, 2], [0, 0, 0, 0], [0, 1024, 0, 0], [0, 2, 0, 0]],
+    // values: [[0, 2, 4, 8], [16, 32, 64, 128], [256, 512, 1024, 2048], [4096, 0, 0, 0]]
+    freeze: false,
+    updateTime: 100
+  };
+
   getFreeCells = () =>
     this.state.values.reduce((aggregator, row, rowIndex) => {
       row.forEach((el, elementIndex) => {
@@ -37,8 +37,11 @@ class Board extends React.Component {
   getBusyCellsInRow = rowIndex =>
     this.getBusyCells().filter(el => el[0] === rowIndex);
 
-  getBusyCellsInColumn = (columnIndex) => 
+  getBusyCellsInColumn = columnIndex =>
     this.getBusyCells().filter(el => el[1] === columnIndex);
+
+  isGameWon = () =>
+    this.state.values.some(row => Boolean(row.some(el => el === 2048)));
 
   updateValues = (counter, cb) => {
     const freeCells = this.getFreeCells();
@@ -77,9 +80,9 @@ class Board extends React.Component {
   getCellsAtBottom = (rowIndex, columnIndex) => {
     return this.state.values
       .map((_, rowIndex) => [rowIndex, columnIndex])
-      .filter((el) => el[0] > rowIndex)
+      .filter(el => el[0] > rowIndex)
       .sort((el1, el2) => el1 > el2);
-  }
+  };
 
   moveCellToLeft = (rowIndex, columnIndex) => {
     const busyLeftCellsInRow = this.getBusyCellsInRow(rowIndex).filter(
@@ -96,10 +99,7 @@ class Board extends React.Component {
         busyLeftCellsInRow.filter(el => el[0] === cell[0] && el[1] === cell[1])
           .length !== 0
       ) {
-        if (
-          row[cell[1]] ===
-          row[cell[1] + 1]
-        ) {
+        if (row[cell[1]] === row[cell[1] + 1]) {
           // Merge
           row[cell[1]] *= 2;
           row[cell[1] + 1] = 0;
@@ -133,10 +133,7 @@ class Board extends React.Component {
         busyRightCellsInRow.filter(el => el[0] === cell[0] && el[1] === cell[1])
           .length !== 0
       ) {
-        if (
-          row[cell[1]] ===
-          row[cell[1] - 1]
-        ) {
+        if (row[cell[1]] === row[cell[1] - 1]) {
           // Merge
           row[cell[1]] *= 2;
           row[cell[1] - 1] = 0;
@@ -168,13 +165,11 @@ class Board extends React.Component {
       const columnIndex = cell[1];
 
       if (
-        busyTopCellsInColumn.filter(el => el[0] === cell[0] && el[1] === cell[1])
-          .length !== 0
+        busyTopCellsInColumn.filter(
+          el => el[0] === cell[0] && el[1] === cell[1]
+        ).length !== 0
       ) {
-        if (
-          column[cell[0]] ===
-          column[cell[0] + 1]
-        ) {
+        if (column[cell[0]] === column[cell[0] + 1]) {
           // Merge
           column[cell[0]] *= 2;
           column[cell[0] + 1] = 0;
@@ -189,15 +184,17 @@ class Board extends React.Component {
     });
 
     this.setState(prevState => {
-      prevState.values.forEach((row, rowIndex) => {row[columnIndex] = column[rowIndex]})
+      prevState.values.forEach((row, rowIndex) => {
+        row[columnIndex] = column[rowIndex];
+      });
       return prevState;
     });
-  }
+  };
 
   moveCellToBottom = (rowIndex, columnIndex) => {
-    const busyBottomCellsInColumn = this.getBusyCellsInColumn(columnIndex).filter(
-      cell => cell[0] > rowIndex
-    );
+    const busyBottomCellsInColumn = this.getBusyCellsInColumn(
+      columnIndex
+    ).filter(cell => cell[0] > rowIndex);
 
     const cellsAtBottom = this.getCellsAtBottom(rowIndex, columnIndex);
 
@@ -207,15 +204,13 @@ class Board extends React.Component {
       const columnIndex = cell[1];
 
       if (
-        busyBottomCellsInColumn.filter(el => el[0] === cell[0] && el[1] === cell[1])
-          .length !== 0
+        busyBottomCellsInColumn.filter(
+          el => el[0] === cell[0] && el[1] === cell[1]
+        ).length !== 0
       ) {
-        if (
-          column[cell[0]] ===
-          column[cell[0] - 1]
-        ) {
+        if (column[cell[0]] === column[cell[0] - 1]) {
           // Merge
-          console.log('merge')
+          console.log('merge');
           column[cell[0]] *= 2;
           column[cell[0] - 1] = 0;
         }
@@ -226,14 +221,15 @@ class Board extends React.Component {
       var tmp = column[cell[0] - 1];
       column[cell[0] - 1] = column[cell[0]];
       column[cell[0]] = tmp;
-      console.log("column after: ", column)
     });
 
     this.setState(prevState => {
-      prevState.values.forEach((row, rowIndex) => {row[columnIndex] = column[rowIndex]})
+      prevState.values.forEach((row, rowIndex) => {
+        row[columnIndex] = column[rowIndex];
+      });
       return prevState;
     });
-  }
+  };
 
   moveLeft = () => {
     console.log('Moving Left');
@@ -243,7 +239,6 @@ class Board extends React.Component {
 
     busyCells.forEach(cell => this.moveCellToLeft(cell[0], cell[1]));
   };
-
 
   moveRight = () => {
     console.log('Moving Right');
@@ -261,7 +256,7 @@ class Board extends React.Component {
       .sort((cell1, cell2) => cell1[0] > cell2[0]);
 
     busyCells.forEach(cell => this.moveCellToTop(cell[0], cell[1]));
-  }
+  };
 
   moveDown = () => {
     console.log('Moving Down');
@@ -270,21 +265,72 @@ class Board extends React.Component {
       .sort((cell1, cell2) => cell1[0] < cell2[0]);
 
     busyCells.forEach(cell => this.moveCellToBottom(cell[0], cell[1]));
-  }
+  };
 
+  onKeyPress = e => {
+    const freeCells = this.getFreeCells();
 
-  componentWillMount() {
-    setTimeout(this.moveDown, 500);
-  }
+    // Game is lost
+    if (freeCells.length == 0) {
+      alert('Game over');
+      return;
+    }
+
+    // Game is won
+    if (this.isGameWon()) {
+      alert('Congratulations! You won!');
+      return;
+    }
+
+    if (this.state.freeze || [37, 38, 39, 40].indexOf(e.keyCode) === -1) {
+      console.log('wait the values to update');
+      return null;
+    }
+
+    let action = null;
+    switch (e.keyCode) {
+      case 38:
+        // up
+        action = this.moveUp();
+        break;
+      case 40:
+        // down
+        action = this.moveDown;
+        break;
+      case 37:
+        // left
+        action = this.moveLeft;
+        break;
+      case 39:
+        // right
+        action = this.moveRight;
+        break;
+      default:
+        break;
+    }
+    this.setState(
+      {
+        freeze: true
+      },
+      action
+    );
+
+    setTimeout(() => {
+      this.setState({freeze: false});
+      this.updateValues(2);
+    }, this.state.updateTime);
+  };
 
   render() {
     return (
       <div>
-        <div className="board">
-          {this.state.values.map(row =>
-            row.map(value => <Cell value={value} />)
-          )}
-        </div>
+        {this.props.enablePlaying && (
+          <div className="board" onKeyDown={this.onKeyPress} tabIndex="0">
+            {this.state.values.map(row =>
+              row.map(value => <Cell value={value} />)
+            )}
+          </div>
+        )}
       </div>
     );
   }
