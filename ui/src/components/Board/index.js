@@ -6,10 +6,10 @@ import './style.css';
 class Board extends React.Component {
   state = {
     values: this.props.values || [
-      [0, 0, 0, 0],
-      [0, 0, 0, 0],
-      [0, 0, 0, 0],
-      [0, 0, 0, 0]
+      [0, 4, 8, 4],
+      [4, 8, 0, 64],
+      [2, 1024, 16, 4],
+      [4, 0, 1024, 2]
     ],
     freeze: false,
     updateTime: 100
@@ -76,10 +76,10 @@ class Board extends React.Component {
             break;
           }
           const index = parseInt((Math.random() * 100) % freeCells.length);
-          const value = [2, 4][parseInt((Math.random() * 100) % 2)]
+          const value = [2, 4][parseInt((Math.random() * 100) % 2)];
           const [rowIndex, columnIndex] = freeCells[index];
 
-          prevState.values[rowIndex][columnIndex] = 2;
+          prevState.values[rowIndex][columnIndex] = value;
 
           counter--;
         }
@@ -94,28 +94,27 @@ class Board extends React.Component {
 
   getCellsAtLeft = (rowIndex, columnIndex) =>
     this.state.values[rowIndex]
-      .map((el, columnIndex) => [rowIndex, columnIndex])
+      .map((_, cIndex) => [rowIndex, cIndex])
       .filter((_, index) => index < columnIndex)
       .sort((el1, el2) => el1 < el2);
 
   getCellsAtRight = (rowIndex, columnIndex) =>
     this.state.values[rowIndex]
-      .map((el, columnIndex) => [rowIndex, columnIndex])
+      .map((_, cIndex) => [rowIndex, cIndex])
       .filter((_, index) => index > columnIndex)
       .sort((el1, el2) => el1 > el2);
 
   getCellsAtTop = (rowIndex, columnIndex) =>
     this.state.values
       .filter((_, index) => index < rowIndex)
-      .map((_, rowIndex) => [rowIndex, columnIndex])
+      .map((_, rIndex) => [rIndex, columnIndex])
       .sort((el1, el2) => el1 < el2);
 
-  getCellsAtBottom = (rowIndex, columnIndex) => {
-    return this.state.values
-      .map((_, rowIndex) => [rowIndex, columnIndex])
+  getCellsAtBottom = (rowIndex, columnIndex) =>
+    this.state.values
+      .map((_, rIndex) => [rIndex, columnIndex])
       .filter(el => el[0] > rowIndex)
       .sort((el1, el2) => el1 > el2);
-  };
 
   moveCellToLeft = (rowIndex, columnIndex) => {
     const busyLeftCellsInRow = this.getBusyCellsInRow(rowIndex).filter(
