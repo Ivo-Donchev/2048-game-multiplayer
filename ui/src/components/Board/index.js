@@ -327,7 +327,7 @@ class Board extends React.Component {
     switch (e.keyCode) {
       case 38:
         // up
-        action = this.moveUp();
+        action = this.moveUp;
         break;
       case 40:
         // down
