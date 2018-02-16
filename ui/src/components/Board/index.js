@@ -11,6 +11,12 @@ class Board extends React.Component {
       [2, 1024, 16, 4],
       [4, 0, 1024, 2]
     ],
+    // values: this.props.values || [
+    //   [0, 0, 0, 0],
+    //   [0, 0, 0, 0],
+    //   [0, 0, 0, 0],
+    //   [0, 0, 0, 0]
+    // ],
     freeze: false,
     updateTime: 100
   };
@@ -144,10 +150,10 @@ class Board extends React.Component {
       row[cell[1]] = tmp;
     });
 
-    this.setState(prevState => {
-      prevState.values[rowIndex] = row;
-      return prevState;
-    }, this.props.updateValues(this.state.values));
+    const values = this.state.values.map(
+      (r, rIndex) => (rowIndex == rIndex ? row : r)
+    );
+    this.setState({values}, this.props.updateValues(this.state.values));
   };
 
   moveCellToRight = (rowIndex, columnIndex) => {
@@ -178,10 +184,10 @@ class Board extends React.Component {
       row[cell[1]] = tmp;
     });
 
-    this.setState(prevState => {
-      prevState.values[rowIndex] = row;
-      return prevState;
-    }, this.props.updateValues(this.state.values));
+    const values = this.state.values.map(
+      (r, rIndex) => (rowIndex == rIndex ? row : r)
+    );
+    this.setState({values}, this.props.updateValues(this.state.values));
   };
 
   moveCellToTop = (rowIndex, columnIndex) => {
@@ -215,12 +221,11 @@ class Board extends React.Component {
       column[cell[0]] = tmp;
     });
 
-    this.setState(prevState => {
-      prevState.values.forEach((row, rowIndex) => {
-        row[columnIndex] = column[rowIndex];
-      });
-      return prevState;
-    }, this.props.updateValues(this.state.values));
+    const values = this.state.values.map((row, rowIndex) => {
+      row[columnIndex] = column[rowIndex];
+      return row;
+    });
+    this.setState({values}, this.props.updateValues(this.state.values));
   };
 
   moveCellToBottom = (rowIndex, columnIndex) => {
@@ -255,12 +260,11 @@ class Board extends React.Component {
       column[cell[0]] = tmp;
     });
 
-    this.setState(prevState => {
-      prevState.values.forEach((row, rowIndex) => {
-        row[columnIndex] = column[rowIndex];
-      });
-      return prevState;
-    }, this.props.updateValues(this.state.values));
+    const values = this.state.values.map((row, rowIndex) => {
+      row[columnIndex] = column[rowIndex];
+      return row;
+    });
+    this.setState({values}, this.props.updateValues(this.state.values));
   };
 
   moveLeft = () => {

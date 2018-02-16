@@ -78,13 +78,13 @@ class MyGame extends React.Component {
 
     return (
       <div>
-        <h1 className="main-header">Start game</h1>
+        <h1 className="main-header">My game</h1>
         <Board
           enablePlaying={true}
           updateValues={this.updateValues}
           newGame={this.newGame}
         />
-        <h1>Other games</h1>
+        <h1 className="other-games">Other games</h1>
         {otherBoards}
       </div>
     );
